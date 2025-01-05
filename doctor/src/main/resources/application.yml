@@ -1,0 +1,21 @@
+spring:
+  config:
+    import: configserver:${CONFIG_URL:http://localhost:8800}/
+  application:
+    name: doctor
+  cloud:
+    config:
+      name: ${spring.application.name}
+      uri: ${CONFIG_URL}
+      fail-fast: true
+      retry:
+        initial-interval: 2000
+        max-interval: 10000
+        multiplier: 2
+        max-attempts: 10
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
