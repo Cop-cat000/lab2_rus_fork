@@ -13,6 +13,14 @@ spring:
         max-interval: 10000
         multiplier: 2
         max-attempts: 10
+#kafka:
+  #bootstrap-servers: kafka1:9092
+  #consumer:
+   # group-id: notification-group
+    #auto-offset-reset: earliest
+  #producer:
+   # key-serializer: org.apache.kafka.common.serialization.StringSerializer
+    #value-serializer: org.apache.kafka.common.serialization.StringSerializer
 
 eureka:
   client:

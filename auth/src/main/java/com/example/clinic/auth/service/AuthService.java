@@ -17,13 +17,21 @@ public class AuthService {
     private final UserDetailsService userDetailsService;
     private final RoleService roleService;
     private final UserService userService;
+    private final KafkaProducerService kafkaProducerService; // Добавьте KafkaProducerService
 
     public String logIn(UserDTO userDTO) {
         var user = userDetailsService.loadUserByUsername(userDTO.getLogin());
         if (!passwordEncoder.matches(userDTO.getPass(), user.getPassword())) {
             throw new BadCredentialsException("Invalid user or password");
         }
-        return jwtService.generateToken(user);
+        String jwt = jwtService.generateToken(user);
+
+        // Отправка сообщения в Kafka при успешной авторизации
+        String message = "User " + userDTO.getLogin() + " successfully authenticated";
+        kafkaProducerService.sendMessageToAllNotifications(message);
+        kafkaProducerService.sendMessageToAuthorization(message);
+
+        return jwt;
     }
 
     public void registerUser(UserDTO userDTO) {
