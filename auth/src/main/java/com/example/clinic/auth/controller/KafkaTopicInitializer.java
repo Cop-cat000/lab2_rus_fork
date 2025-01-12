@@ -13,7 +13,7 @@ public class KafkaTopicInitializer implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        kafkaTopicService.createTopic("all-notifications", 1, (short) 1);
-        kafkaTopicService.createTopic("authorization", 1, (short) 1);
+        kafkaTopicService.createTopic("all-notifications", 3, (short) 3);
+        kafkaTopicService.createTopic("authorization", 3, (short) 3);
     }
 }

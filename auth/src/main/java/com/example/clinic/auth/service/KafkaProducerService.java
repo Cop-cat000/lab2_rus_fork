@@ -16,12 +16,12 @@ public class KafkaProducerService {
 
     public void sendMessageToAllNotifications(String message) {
         kafkaTemplate.send(ALL_NOTIFICATIONS_TOPIC, message);
-        System.out.println("ЗАЕБИСЬ ЗАРАБОТАЛО ВСЕ УВЕДОМЛЕНИЯ");
+        System.out.println("ЗАЕБИСЬ ЗАРАБОТАЛИ ВСЕ УВЕДОМЛЕНИЯ");
     }
 
     public void sendMessageToAuthorization(String message) {
         kafkaTemplate.send(AUTHORIZATION_TOPIC, message);
-        System.out.println("ЗАЕБИСЬ ЗАРАБОТАЛО УВЕДОМЛЕНИЯ АВТОРИЗАЦИИ");
+        System.out.println("ЗАЕБИСЬ ЗАРАБОТАЛО УВЕДОМЛЕНИЕ АВТОРИЗАЦИИ");
 
 
     }

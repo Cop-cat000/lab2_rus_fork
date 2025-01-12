@@ -14,7 +14,7 @@ spring:
         multiplier: 2
         max-attempts: 10
 #kafka:
-  #bootstrap-servers: kafka1:9092
+ # bootstrap-servers: kafka1:9093,kafka2:9095,kafka3:9097
   #consumer:
    # group-id: notification-group
     #auto-offset-reset: earliest
