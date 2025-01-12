@@ -22,12 +22,12 @@ public class AuthService {
     public String logIn(UserDTO userDTO) {
         var user = userDetailsService.loadUserByUsername(userDTO.getLogin());
         if (!passwordEncoder.matches(userDTO.getPass(), user.getPassword())) {
-            throw new BadCredentialsException("Invalid user or password");
+            throw new BadCredentialsException("Неверный пользователь или пароль");
         }
         String jwt = jwtService.generateToken(user);
 
         // Отправка сообщения в Kafka при успешной авторизации
-        String message = "User " + userDTO.getLogin() + " successfully authenticated";
+        String message = "Пользователь " + userDTO.getLogin() + " успешно авторизован";
         kafkaProducerService.sendMessageToAllNotifications(message);
         kafkaProducerService.sendMessageToAuthorization(message);
 
