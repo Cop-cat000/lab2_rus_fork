@@ -32,3 +32,7 @@ springdoc:
     path: /api-docs
   swagger-ui:
     path: /api
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: ${EUREKA_URL:http://eureka:8761/eureka/}
