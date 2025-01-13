@@ -12,24 +12,37 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class AuthService {
+
     private final JwtService jwtService;
     private final PasswordEncoder passwordEncoder;
     private final UserDetailsService userDetailsService;
     private final RoleService roleService;
     private final UserService userService;
-    private final KafkaProducerService kafkaProducerService; // Добавьте KafkaProducerService
+    private final KafkaProducerAuthService kafkaProducerAuthService;
 
     public String logIn(UserDTO userDTO) {
         var user = userDetailsService.loadUserByUsername(userDTO.getLogin());
+
         if (!passwordEncoder.matches(userDTO.getPass(), user.getPassword())) {
+            // Отправка сообщения при неверной авторизации
+            try {
+                kafkaProducerAuthService.sendMessage("all-notifications", "Неверный пользователь или пароль");
+            } catch (Exception e) {
+                System.err.println("Ошибка при отправке сообщения в Kafka: " + e.getMessage());
+            }
             throw new BadCredentialsException("Неверный пользователь или пароль");
         }
-        String jwt = jwtService.generateToken(user);
 
-        // Отправка сообщения в Kafka при успешной авторизации
+        // Успешная авторизация
+        String jwt = jwtService.generateToken(user);
         String message = "Пользователь " + userDTO.getLogin() + " успешно авторизован";
-        kafkaProducerService.sendMessage("all-notifications", message); // Универсальный метод
-        kafkaProducerService.sendMessage("authorization", message); // Универсальный метод
+
+        try {
+            kafkaProducerAuthService.sendMessage("all-notifications", message);
+            kafkaProducerAuthService.sendMessage("authorization", message);
+        } catch (Exception e) {
+            System.err.println("Ошибка при отправке сообщения в Kafka: " + e.getMessage());
+        }
 
         return jwt;
     }

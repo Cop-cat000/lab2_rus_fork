@@ -21,11 +21,14 @@ public class PatientService {
 
     private final PatientRepository patientRepository;
     private final PatientMapper patientMapper;
+    private final KafkaProducerPatientService kafkaProducerPatientService;
 
     @Transactional(isolation = Isolation.REPEATABLE_READ)
     public Patient createPatient(PatientCreationDTO patientDto) {
         Patient patient = patientMapper.patientDtoToEntity(patientDto);
-
+        String message = "Пациент " + patientDto.name() + " успешно авторизован";
+        kafkaProducerPatientService.sendMessage("all-notifications", message);
+        kafkaProducerPatientService.sendMessage("patient-notifications", message);
         return patientRepository.save(patient);
     }
 

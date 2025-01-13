@@ -1,4 +1,4 @@
-package com.example.clinic.auth.config;
+package com.example.clinic.patient.config;
 import org.apache.kafka.clients.admin.AdminClientConfig;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.producer.ProducerConfig;
@@ -13,9 +13,10 @@ import org.springframework.kafka.core.*;
 
 import java.util.HashMap;
 import java.util.Map;
+
 @EnableKafka
 @Configuration
-public class KafkaConfig {
+public class KafkaPatientConfig {
 
     @Value("${spring.kafka.bootstrap-servers}")
     private String bootstrapServers;

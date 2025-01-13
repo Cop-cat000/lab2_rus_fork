@@ -1,19 +1,19 @@
 package com.example.clinic.auth.controller;
 
-import com.example.clinic.auth.service.KafkaTopicService;
+import com.example.clinic.auth.service.KafkaTopicAuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/kafka") // Общий префикс для Kafka API
-public class KafkaTopicController implements CommandLineRunner {
+public class KafkaTopicAuthController implements CommandLineRunner {
 
-    private final KafkaTopicService kafkaTopicService;
+    private final KafkaTopicAuthService kafkaTopicAuthService;
 
     @Autowired
-    public KafkaTopicController(KafkaTopicService kafkaTopicService) {
-        this.kafkaTopicService = kafkaTopicService;
+    public KafkaTopicAuthController(KafkaTopicAuthService kafkaTopicAuthService) {
+        this.kafkaTopicAuthService = kafkaTopicAuthService;
     }
 
     // Метод для создания топиков через REST API
@@ -23,15 +23,16 @@ public class KafkaTopicController implements CommandLineRunner {
             @RequestParam int partitions,
             @RequestParam short replicationFactor
     ) {
-        kafkaTopicService.createTopic(topicName, partitions, replicationFactor);
+        kafkaTopicAuthService.createTopic(topicName, partitions, replicationFactor);
         return "Topic " + topicName + " created successfully";
     }
 
     // Метод для создания стандартных топиков при запуске приложения
     @Override
     public void run(String... args) throws Exception {
-        kafkaTopicService.createTopic("all-notifications", 3, (short) 3);
-        kafkaTopicService.createTopic("authorization", 3, (short) 3);
+        kafkaTopicAuthService.createTopic("all-notifications", 3, (short) 3);
+        kafkaTopicAuthService.createTopic("authorization", 3, (short) 3);
+        kafkaTopicAuthService.createTopic("patient-notifications", 3, (short) 3);
         System.out.println("Default Kafka topics created");
     }
 }
