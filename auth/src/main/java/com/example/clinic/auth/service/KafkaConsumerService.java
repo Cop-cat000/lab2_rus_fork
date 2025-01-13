@@ -6,8 +6,13 @@ import org.springframework.stereotype.Service;
 @Service
 public class KafkaConsumerService {
 
-    @KafkaListener(topics = "all-notifications", groupId = "example-group")
-    public void consume(String message) {
-        System.out.println("Получил сообщение: " + message);
+    @KafkaListener(topics = "all-notifications", groupId = "${spring.kafka.consumer.group-id}")
+    public void consumeAllNotifications(String message) {
+        System.out.println("Received from all-notifications: " + message);
+    }
+
+    @KafkaListener(topics = "authorization", groupId = "${spring.kafka.consumer.group-id}")
+    public void consumeAuthorization(String message) {
+        System.out.println("Received from authorization: " + message);
     }
 }

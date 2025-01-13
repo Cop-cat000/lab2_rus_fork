@@ -28,8 +28,8 @@ public class AuthService {
 
         // Отправка сообщения в Kafka при успешной авторизации
         String message = "Пользователь " + userDTO.getLogin() + " успешно авторизован";
-        kafkaProducerService.sendMessageToAllNotifications(message);
-        kafkaProducerService.sendMessageToAuthorization(message);
+        kafkaProducerService.sendMessage("all-notifications", message); // Универсальный метод
+        kafkaProducerService.sendMessage("authorization", message); // Универсальный метод
 
         return jwt;
     }

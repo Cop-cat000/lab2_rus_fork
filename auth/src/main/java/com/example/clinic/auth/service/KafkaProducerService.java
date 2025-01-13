@@ -1,28 +1,24 @@
 package com.example.clinic.auth.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
 @Service
 public class KafkaProducerService {
 
+    private final KafkaTemplate<String, String> kafkaTemplate;
 
-    @Autowired
-    private KafkaTemplate<String, String> kafkaTemplate;
-
-    private static final String ALL_NOTIFICATIONS_TOPIC = "all-notifications";
-    private static final String AUTHORIZATION_TOPIC = "authorization";
-
-    public void sendMessageToAllNotifications(String message) {
-        kafkaTemplate.send(ALL_NOTIFICATIONS_TOPIC, message);
-        System.out.println("ЗАЕБИСЬ ЗАРАБОТАЛИ ВСЕ УВЕДОМЛЕНИЯ");
+    public KafkaProducerService(KafkaTemplate<String, String> kafkaTemplate) {
+        this.kafkaTemplate = kafkaTemplate;
     }
 
-    public void sendMessageToAuthorization(String message) {
-        kafkaTemplate.send(AUTHORIZATION_TOPIC, message);
-        System.out.println("ЗАЕБИСЬ ЗАРАБОТАЛО УВЕДОМЛЕНИЕ АВТОРИЗАЦИИ");
-
-
+    public void sendMessage(String topic, String message) {
+        try {
+            kafkaTemplate.send(topic, message).get();
+            System.out.println("Message sent to topic: " + topic);
+        } catch (Exception e) {
+            System.err.println("Error sending message to topic: " + topic);
+            e.printStackTrace();
+        }
     }
 }
