@@ -26,12 +26,11 @@ public class PatientService {
     @Transactional(isolation = Isolation.REPEATABLE_READ)
     public Patient createPatient(PatientCreationDTO patientDto) {
         Patient patient = patientMapper.patientDtoToEntity(patientDto);
-        String message = "Пациент " + patientDto.name() + " успешно авторизован";
-        kafkaProducerPatientService.sendMessage("all-notifications", message);
+        String message = "Пациент " + patientDto.name() + " успешно создан";
         kafkaProducerPatientService.sendMessage("patient-notifications", message);
         return patientRepository.save(patient);
     }
-
+// ниже код без упоминания кафки поэтому не отправляю его
     @Transactional(isolation = Isolation.REPEATABLE_READ)
     public Patient updatePatient(Long id, PatientCreationDTO patientDto) {
         Patient patient = patientRepository.findById(id)

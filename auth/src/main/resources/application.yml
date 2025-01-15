@@ -17,7 +17,8 @@ spring:
   kafka:
     bootstrap-servers: kafka1:9093,kafka2:9095,kafka3:9097
     consumer:
-      group-id: example-group
+      group-id: auth-group
+      auth-group: auth-group
       auto-offset-reset: earliest
 
 

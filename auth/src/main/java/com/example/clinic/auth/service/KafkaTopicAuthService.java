@@ -16,6 +16,6 @@ public class KafkaTopicAuthService {
     public void createTopic(String topicName, int partitions, short replicationFactor) {
         NewTopic topic = new NewTopic(topicName, partitions, replicationFactor);
         kafkaAdmin.createOrModifyTopics(topic);
-        System.out.println("Topic created: " + topicName);
+        System.out.println("Топик создан: " + topicName + " портаций - " + partitions + " репликаций - " + replicationFactor);
     }
 }

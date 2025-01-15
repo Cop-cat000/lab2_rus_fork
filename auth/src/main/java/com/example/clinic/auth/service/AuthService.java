@@ -26,7 +26,7 @@ public class AuthService {
         if (!passwordEncoder.matches(userDTO.getPass(), user.getPassword())) {
             // Отправка сообщения при неверной авторизации
             try {
-                kafkaProducerAuthService.sendMessage("all-notifications", "Неверный пользователь или пароль");
+                kafkaProducerAuthService.sendMessage("auth-notifications", "Неверный пользователь или пароль");
             } catch (Exception e) {
                 System.err.println("Ошибка при отправке сообщения в Kafka: " + e.getMessage());
             }
@@ -38,8 +38,7 @@ public class AuthService {
         String message = "Пользователь " + userDTO.getLogin() + " успешно авторизован";
 
         try {
-            kafkaProducerAuthService.sendMessage("all-notifications", message);
-            kafkaProducerAuthService.sendMessage("authorization", message);
+            kafkaProducerAuthService.sendMessage("auth-notifications", message);
         } catch (Exception e) {
             System.err.println("Ошибка при отправке сообщения в Kafka: " + e.getMessage());
         }

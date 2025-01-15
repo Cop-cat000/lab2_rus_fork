@@ -33,7 +33,6 @@ public class KafkaTopicPatientController implements CommandLineRunner {
     // Метод для создания стандартных топиков при запуске приложения
     @Override
     public void run(String... args) throws Exception {
-
         kafkaTopicPatientService.createPatientTopic("patient-notifications", 3, (short) 3);
         System.out.println("Default Kafka topics created");
     }
