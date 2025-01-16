@@ -5,24 +5,19 @@ import io.minio.MinioClient;
 import io.minio.PutObjectArgs;
 import io.minio.RemoveObjectArgs;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.InputStream;
 
 @Service
+@RequiredArgsConstructor
 public class MinioService {
 
     private final MinioClient minioClient;
 
-    public MinioService(@Value("${minio.endpoint}") String endpoint,
-                        @Value("${minio.accessKey}") String accessKey,
-                        @Value("${minio.secretKey}") String secretKey){
-        this.minioClient = MinioClient.builder()
-                            .endpoint(endpoint)
-                            .credentials(accessKey, secretKey)
-                            .build();
-    }
+    private final KafkaProducerMinioService kafkaProducerMinioService;
 
     public void uploadFile(@Value("${minio.bucket}") String bucket, String fileName,
                            InputStream fileStream,
@@ -35,6 +30,9 @@ public class MinioService {
                             .stream(fileStream, fileStream.available(), -1)
                             .contentType(contentType)
                             .build());
+            String message = "Файл: " + fileName + " успешно загружен";
+            kafkaProducerMinioService.sendMessage("minio-notifications", message);
+
         } catch (Exception e) {
             throw new RuntimeException("Error uploading file to MinIO: " + e);
         }

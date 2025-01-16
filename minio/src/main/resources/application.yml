@@ -27,4 +27,10 @@ minio:
   secretKey: Hh4aTTUVES6i0RKsgHOk7V6URZryMWLHUDydQRhA
   bucket: filesdemo
 
-
+spring:
+  kafka:
+    bootstrap-servers: kafka1:9093,kafka2:9095,kafka3:9097
+    consumer:
+      group-id: minio-group
+      minio-group: minio-group
+      auto-offset-reset: earliest
