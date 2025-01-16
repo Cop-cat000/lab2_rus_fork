@@ -32,6 +32,8 @@ services:
       - KAFKA_CFG_CONTROLLER_LISTENER_NAMES=CONTROLLER
       - KAFKA_ENABLE_KRAFT=yes
       - KAFKA_CFG_LOG_DIRS=/bitnami/kafka/data
+      - KAFKA_NUM_PARTITIONS=3  # Устанавливаем количество партиций
+      - KAFKA_DEFAULT_REPLICATION_FACTOR=3  # Устанавливаем фактор репликации
     depends_on:
       eureka:
         condition: service_healthy
@@ -51,6 +53,8 @@ services:
       - KAFKA_CFG_CONTROLLER_LISTENER_NAMES=CONTROLLER
       - KAFKA_ENABLE_KRAFT=yes
       - KAFKA_CFG_LOG_DIRS=/bitnami/kafka/data
+      - KAFKA_NUM_PARTITIONS=3  # Устанавливаем количество партиций
+      - KAFKA_DEFAULT_REPLICATION_FACTOR=3  # Устанавливаем фактор репликации
     depends_on:
       eureka:
         condition: service_healthy
@@ -70,6 +74,8 @@ services:
       - KAFKA_CFG_CONTROLLER_LISTENER_NAMES=CONTROLLER
       - KAFKA_ENABLE_KRAFT=yes
       - KAFKA_CFG_LOG_DIRS=/bitnami/kafka/data
+      - KAFKA_NUM_PARTITIONS=3  # Устанавливаем количество партиций
+      - KAFKA_DEFAULT_REPLICATION_FACTOR=3  # Устанавливаем фактор репликации
     depends_on:
       eureka:
         condition: service_healthy
