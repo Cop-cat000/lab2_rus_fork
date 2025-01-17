@@ -9,8 +9,8 @@ services:
     ports:
       - '5433:5432'
     healthcheck:
-      test: "pg_isready -: 5sd clinic_db -U clinic"
-      interval
+      test: "pg_isready -d clinic_db -U clinic"
+      interval: 5s
       timeout: 2s
       retries: 5
     volumes:
@@ -314,7 +314,6 @@ services:
 #        condition: service_healthy
     volumes:
       - ./minio_storage:/data
-
 
 volumes:
   postgres_data:
