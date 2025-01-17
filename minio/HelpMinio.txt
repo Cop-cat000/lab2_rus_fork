@@ -5,8 +5,10 @@ POST http://localhost:8089/upload
     in body choose form-data
     input file , choose path for file
 
-DELETE http://localhost:8089/download/asdf.txt
-DELETE http://localhost:8089/download/Gnome8V1.ogg
+DELETE http://localhost:8089/delete/asdf.txt
+DELETE http://localhost:8089/delete/Gnome8V1.ogg
+
+
 
 
 docker exec -it lab2_rus_fork-kafka1-1 bash

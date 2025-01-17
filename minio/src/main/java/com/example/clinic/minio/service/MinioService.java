@@ -40,13 +40,18 @@ public class MinioService {
 
     public InputStream downloadFile(@Value("${minio.bucket}") String bucket, String objectName) {
         try {
-            return minioClient.getObject(
+            InputStream inputStream = minioClient.getObject(
                     GetObjectArgs.builder()
                             .bucket(bucket)
                             .object(objectName)
                             .build());
+
+            String message = "Файл: " + objectName + " успешно скачан";
+            kafkaProducerMinioService.sendMessage("minio-notifications", message);
+
+            return inputStream;
         } catch (Exception e) {
-            throw new RuntimeException("Error downloading file from MinIO: " + e);
+            throw new RuntimeException("Error downloading file from MinIO", e);
         }
     }
 
@@ -57,6 +62,9 @@ public class MinioService {
                             .bucket(bucket)
                             .object(objectName)
                             .build());
+            String message = "Файл: " + objectName + " успешно удален";
+            kafkaProducerMinioService.sendMessage("minio-notifications", message);
+
         } catch (Exception e) {
             throw new RuntimeException("Error deleting file from MinIO: " + e);
         }
