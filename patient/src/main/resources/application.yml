@@ -1,5 +1,5 @@
 spring:
-  mvc.static-path-pattern: /api/patients/web-socket/**
+  mvc.static-path-pattern: /api/patients/ws/**
   config:
     import: configserver:${CONFIG_URL:http://localhost:8800}/
   application:
