@@ -33,13 +33,13 @@ public class PatientController {
     private final PatientService patientService;
     private final PatientMapper patientMapper;
 
-    @PostMapping
+    /*@PostMapping
     public ResponseEntity<PatientCreationDTO> createPatient(@Valid @RequestBody PatientCreationDTO patientDto) {
         Patient patient = patientService.createPatient(patientDto);
 
         return ResponseEntity.created(URI.create("/api/patients/" + patient.getId()))
                 .body(patientDto);
-    }
+    }*/
 
     @PutMapping("/{id}")
     public ResponseEntity<PatientCreationDTO> updatePatient(@PathVariable Long id, @Valid @RequestBody PatientCreationDTO patientDto) {

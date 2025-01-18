@@ -13,8 +13,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.time.LocalDate;
+
 @Controller
-@RequestMapping
 @RequiredArgsConstructor
 @Slf4j
 public class PatientCreationController {
@@ -23,10 +24,11 @@ public class PatientCreationController {
 
     @MessageMapping("/create")
     @SendTo("/api/patients/ws/topic/created")
-    public SimplePatientCreationDTO createPatient(@Valid @RequestBody SimplePatientCreationDTO patientDto) {
+    public SimplePatientCreationDTO createPatient(SimplePatientCreationDTO patientDto) {
         System.out.println(patientDto);
-        PatientCreationDTO patientCreationDTO = new PatientCreationDTO(patientDto.name(), patientDto.dateOfBirth(), patientDto.email());
+        PatientCreationDTO patientCreationDTO = new PatientCreationDTO(patientDto.name(), patientDto.dateOfBirth().toLocalDate(), patientDto.email());
         Patient patient = patientService.createPatient(patientCreationDTO);
+        System.out.println(patientCreationDTO);
         return patientDto;
     }
 }

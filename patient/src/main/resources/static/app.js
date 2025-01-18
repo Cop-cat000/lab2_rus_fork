@@ -2,26 +2,39 @@ let stompClient = null;
 
 document.getElementById('connect').addEventListener('click', () => {
     console.log("Connecting to WebSocket...");
-    const socket = new SockJS('/api/patients/broker'); // Убедись, что этот путь совпадает с серверной конфигурацией
+
+    const authToken = document.getElementById('authToken').value.trim(); // Получаем токен
+    if (!authToken) {
+        console.error("Authorization token is required!");
+        alert("Please enter an Authorization token.");
+        return;
+    }
+
+    const socket = new SockJS('/api/patients/ws/broker'); // Убедись, что этот путь совпадает с серверной конфигурацией
     stompClient = Stomp.over(socket);
 
-    stompClient.connect({}, (frame) => {
-        console.log("Connected: " + frame);
-        document.getElementById('connect').disabled = true;
-        document.getElementById('disconnect').disabled = false;
+    // Отправка токена при подключении
+    stompClient.connect(
+        { Authorization: `Bearer ${authToken}` }, // Передаем токен в заголовке
+        (frame) => {
+            console.log("Connected: " + frame);
+            document.getElementById('connect').disabled = true;
+            document.getElementById('disconnect').disabled = false;
 
-        // Подписка на сообщения
-        stompClient.subscribe('/api/patients/topic/created', (message) => {
-            const receivedData = JSON.parse(message.body);
-            const messagesList = document.getElementById('messages');
-            const listItem = document.createElement('li');
-            listItem.textContent = `Name: ${receivedData.name}, Date of Birth: ${receivedData.dateOfBirth}, Email: ${receivedData.email}`;
-            // Добавляем новое сообщение в начало списка
-            messagesList.insertBefore(listItem, messagesList.firstChild);
-        });
-    }, (error) => {
-        console.error("Error connecting to WebSocket:", error);
-    });
+            // Подписка на сообщения
+            stompClient.subscribe('/api/patients/ws/topic/created', (message) => {
+                const receivedData = JSON.parse(message.body);
+                const messagesList = document.getElementById('messages');
+                const listItem = document.createElement('li');
+                listItem.textContent = `Name: ${receivedData.name}, Date of Birth: ${receivedData.dateOfBirth}, Email: ${receivedData.email}`;
+                // Добавляем новое сообщение в начало списка
+                messagesList.insertBefore(listItem, messagesList.firstChild);
+            });
+        },
+        (error) => {
+            console.error("Error connecting to WebSocket:", error);
+        }
+    );
 });
 
 document.getElementById('disconnect').addEventListener('click', () => {
@@ -36,13 +49,24 @@ document.getElementById('disconnect').addEventListener('click', () => {
 
 document.getElementById('send-form').addEventListener('submit', (event) => {
     event.preventDefault();
-    const name = document.getElementById('name').value;
-    const dateOfBirth = document.getElementById('dateOfBirth').value;
-    const email = document.getElementById('email').value;
+
+    // Извлечение данных из полей
+    const name = document.getElementById('name').value.trim();
+    const dateInput = document.getElementById('dateOfBirth');
+    const email = document.getElementById('email').value.trim();
+
+    // Преобразование даты в формат YYYY-MM-DD
+    const dateOfBirth = dateInput.value ? dateInput.value : null;
+
+    if (!name || !dateOfBirth || !email) {
+        console.error("All fields are required!");
+        alert("Please fill in all fields correctly.");
+        return;
+    }
 
     const dto = {
         name: name,
-        dateOfBirth: dateOfBirth,
+        dateOfBirth: dateOfBirth, // Теперь дата строго в формате YYYY-MM-DD
         email: email
     };
 

@@ -173,6 +173,8 @@ services:
       CONFIG_URL: http://config:8800
   patient:
     build: ./patient
+    ports:
+      - "8801:8888"
     depends_on:
       eureka:
         condition: service_healthy
