@@ -14,11 +14,9 @@ public class KafkaTopicAuthController implements CommandLineRunner {
     public KafkaTopicAuthController(KafkaTopicAuthService kafkaTopicAuthService) {
         this.kafkaTopicAuthService = kafkaTopicAuthService;
     }
-
-
     @Override
     public void run(String... args) {
-        kafkaTopicAuthService.createTopic("auth-notifications", 3, (short) 3);
+        kafkaTopicAuthService.createTopic("auth-notifications", 3, (short) 1);
         System.out.println("Default Kafka topics created");
     }
 }

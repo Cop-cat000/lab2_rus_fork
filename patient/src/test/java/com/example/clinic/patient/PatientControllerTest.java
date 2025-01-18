@@ -1,13 +1,19 @@
 //package com.example.clinic.patient;
 //
+//import com.example.clinic.patient.controller.KafkaTopicPatientController;
+//import com.example.clinic.patient.service.KafkaTopicPatientService;
 //import org.junit.jupiter.api.Test;
 //import org.springframework.beans.factory.annotation.Autowired;
 //import org.springframework.beans.factory.annotation.Value;
+//import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+//import org.springframework.boot.autoconfigure.kafka.KafkaAutoConfiguration;
 //import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 //import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 //import org.springframework.boot.test.context.SpringBootTest;
+//import org.springframework.boot.test.mock.mockito.MockBean;
 //import org.springframework.core.io.Resource;
 //import org.springframework.http.MediaType;
+//import org.springframework.kafka.core.KafkaAdmin;
 //import org.springframework.test.annotation.DirtiesContext;
 //import org.springframework.test.context.ActiveProfiles;
 //import org.springframework.test.context.jdbc.Sql;
@@ -17,27 +23,35 @@
 //import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 //
 //@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-//@SpringBootTest
-//@AutoConfigureMockMvc
 //@Sql(value = {
 //        "/sql/test.sql"
 //}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_CLASS)
 //@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
 //@ActiveProfiles("test")
+//@SpringBootTest
+//@EnableAutoConfiguration(exclude = KafkaAutoConfiguration.class) // Исключение Kafka
+//@AutoConfigureMockMvc
 //class PatientControllerTest {
 //
 //    @Autowired
 //    MockMvc mockMvc;
 //
+//    @MockBean // Заглушка для KafkaAdmin
+//    private KafkaAdmin kafkaAdmin;
+//
+//    @MockBean // Заглушка для KafkaTopicPatientService
+//    private KafkaTopicPatientService kafkaTopicPatientService;
+//
+//    @MockBean // Заглушка для KafkaTopicPatientController
+//    private KafkaTopicPatientController kafkaTopicPatientController;
+//
 //    @Test
 //    void createPatient(@Value("classpath:/patients/create.json") Resource json) throws Exception {
-//
 //        mockMvc.perform(post("/api/patients")
 //                        .contentType(MediaType.APPLICATION_JSON)
 //                        .content(json.getContentAsByteArray())
 //                        .accept(MediaType.APPLICATION_JSON))
 //                .andExpect(status().isCreated());
-//
 //    }
 //
 //    @Test
