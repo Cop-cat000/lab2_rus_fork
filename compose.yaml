@@ -16,6 +16,71 @@ services:
     volumes:
       - 'postgres_data:/var/lib/postgresql/data'
       - './database_init/:/docker-entrypoint-initdb.d'
+
+  kafka1:
+    image: 'bitnami/kafka:latest'
+    ports:
+      - "9093:9093" # Порт для клиентов (PLAINTEXT).
+      - "9094:9094" # Порт для взаимодействия контроллеров (CONTROLLER).
+    environment:
+      - KAFKA_CFG_NODE_ID=1
+      - KAFKA_KRAFT_CLUSTER_ID=OTMwNzFhYTY1ODNiNGE5OT
+      - KAFKA_CFG_PROCESS_ROLES=controller,broker
+      - KAFKA_CFG_LISTENERS=PLAINTEXT://:9093,CONTROLLER://:9094
+      - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT
+      - KAFKA_CFG_CONTROLLER_QUORUM_VOTERS=1@kafka1:9094,2@kafka2:9096,3@kafka3:9098
+      - KAFKA_CFG_CONTROLLER_LISTENER_NAMES=CONTROLLER
+      - KAFKA_ENABLE_KRAFT=yes
+      - KAFKA_CFG_LOG_DIRS=/bitnami/kafka/data
+      - KAFKA_NUM_PARTITIONS=3  # Устанавливаем количество партиций
+      - KAFKA_DEFAULT_REPLICATION_FACTOR=3  # Устанавливаем фактор репликации
+    depends_on:
+      eureka:
+        condition: service_healthy
+
+  kafka2:
+    image: 'bitnami/kafka:latest'
+    ports:
+      - "9095:9095" # Порт для клиентов (PLAINTEXT).
+      - "9096:9096" # Порт для взаимодействия контроллеров (CONTROLLER).
+    environment:
+      - KAFKA_CFG_NODE_ID=2
+      - KAFKA_KRAFT_CLUSTER_ID=OTMwNzFhYTY1ODNiNGE5OT
+      - KAFKA_CFG_PROCESS_ROLES=controller,broker
+      - KAFKA_CFG_LISTENERS=PLAINTEXT://:9095,CONTROLLER://:9096
+      - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT
+      - KAFKA_CFG_CONTROLLER_QUORUM_VOTERS=1@kafka1:9094,2@kafka2:9096,3@kafka3:9098
+      - KAFKA_CFG_CONTROLLER_LISTENER_NAMES=CONTROLLER
+      - KAFKA_ENABLE_KRAFT=yes
+      - KAFKA_CFG_LOG_DIRS=/bitnami/kafka/data
+      - KAFKA_NUM_PARTITIONS=3  # Устанавливаем количество партиций
+      - KAFKA_DEFAULT_REPLICATION_FACTOR=3  # Устанавливаем фактор репликации
+    depends_on:
+      eureka:
+        condition: service_healthy
+
+  kafka3:
+    image: 'bitnami/kafka:latest'
+    ports:
+      - "9097:9097" # Порт для клиентов (PLAINTEXT).
+      - "9098:9098" # Порт для взаимодействия контроллеров (CONTROLLER).
+    environment:
+      - KAFKA_CFG_NODE_ID=3
+      - KAFKA_KRAFT_CLUSTER_ID=OTMwNzFhYTY1ODNiNGE5OT
+      - KAFKA_CFG_PROCESS_ROLES=controller,broker
+      - KAFKA_CFG_LISTENERS=PLAINTEXT://:9097,CONTROLLER://:9098
+      - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT
+      - KAFKA_CFG_CONTROLLER_QUORUM_VOTERS=1@kafka1:9094,2@kafka2:9096,3@kafka3:9098
+      - KAFKA_CFG_CONTROLLER_LISTENER_NAMES=CONTROLLER
+      - KAFKA_ENABLE_KRAFT=yes
+      - KAFKA_CFG_LOG_DIRS=/bitnami/kafka/data
+      - KAFKA_NUM_PARTITIONS=3  # Устанавливаем количество партиций
+      - KAFKA_DEFAULT_REPLICATION_FACTOR=3  # Устанавливаем фактор репликации
+    depends_on:
+      eureka:
+        condition: service_healthy
+
+
   eureka:
     build: ./eureka
     ports:
@@ -217,5 +282,40 @@ services:
       DB_PORT: 5432
       DB_USER: recipe
       DB_PASSWORD: recipe
+
+#      нз нз подумай еще
+  minio:
+    image: minio/minio:latest
+    container_name: minio
+#    depends_on:
+#      eureka:
+#        condition: service_healthy
+    environment:
+      MINIO_ROOT_USER: minioadmin
+      MINIO_ROOT_PASSWORD: minioadminsecret
+      EUREKA_URL: http://eureka:8761/eureka/
+      CONFIG_URL: http://config:8800
+    command: server --console-address ":9001" /data
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    volumes:
+      - ./minio_storage:/data
+
+  minio-eureka-service:
+    build: ./minio
+    ports:
+      - "8089:8089"
+    environment:
+      MINIO_ROOT_USER: minioadmin
+      MINIO_ROOT_PASSWORD: minioadminsecret
+#      EUREKA_URL: http://eureka:8761/eureka/
+#      CONFIG_URL: http://config:8800
+#    depends_on:
+#      eureka:
+#        condition: service_healthy
+    volumes:
+      - ./minio_storage:/data
+
 volumes:
   postgres_data:
