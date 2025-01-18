@@ -281,13 +281,9 @@ services:
       DB_USER: recipe
       DB_PASSWORD: recipe
 
-#      нз нз подумай еще
   minio:
     image: minio/minio:latest
     container_name: minio
-#    depends_on:
-#      eureka:
-#        condition: service_healthy
     environment:
       MINIO_ROOT_USER: minioadmin
       MINIO_ROOT_PASSWORD: minioadminsecret
@@ -304,14 +300,16 @@ services:
     build: ./minio
     ports:
       - "8089:8089"
+    depends_on:
+      kafka1:
+        condition: service_started
+      kafka2:
+        condition: service_started
+      kafka3:
+        condition: service_started
     environment:
       MINIO_ROOT_USER: minioadmin
       MINIO_ROOT_PASSWORD: minioadminsecret
-#      EUREKA_URL: http://eureka:8761/eureka/
-#      CONFIG_URL: http://config:8800
-#    depends_on:
-#      eureka:
-#        condition: service_healthy
     volumes:
       - ./minio_storage:/data
 
