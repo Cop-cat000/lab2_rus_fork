@@ -1,6 +1,10 @@
 server:
   port: 8089
 
+springdoc:
+  swagger-ui.path: /api/minio/docs/swagger-ui
+  api-docs.path: /api/minio/docs/v3/api-docs
+
 minio:
   endpoint: http://minio:9000
   accessKey: FGa09cfnVLkDc6frnge7

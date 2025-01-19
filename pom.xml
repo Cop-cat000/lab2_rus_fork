@@ -25,7 +25,7 @@
         <module>patient</module>
         <module>recipe</module>
         <module>timetable</module>
-
+        <module>minio</module>
         <module>eureka</module>
         <module>config</module>
         <module>gateway</module>
