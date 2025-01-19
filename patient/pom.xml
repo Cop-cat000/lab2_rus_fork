@@ -33,6 +33,13 @@
     </dependencyManagement>
 
     <dependencies>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-websocket</artifactId>
+            <version>3.4.1</version>
+        </dependency>
+
         <!-- Kafka нужно будет переработать -->
         <dependency>
             <groupId>org.springframework.kafka</groupId>
