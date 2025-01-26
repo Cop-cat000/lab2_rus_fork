@@ -6,13 +6,13 @@ analysis - http://localhost:8080/api/analyses/docs/swagger-ui    swagger +
 
 appointment - http://localhost:8080/api/appointments/docs/swagger-ui (controller swagger - / type swagger +
 
-billing - http://localhost:8080/api/billing/docs/swagger-ui    swagger -
+billing - http://localhost:8080/api/billing/docs/swagger-ui    swagger +
 
 doctor - http://localhost:8080/api/doctors/docs/swagger-ui    swagger +
 
 document - http://localhost:8080/api/documents/docs/swagger-ui    swagger +
 
-mail - http://localhost:8080/api/mail/docs/swagger-ui
+mail - http://localhost:8080/api/mail/docs/swagger-ui    swagger -
 
 patient - http://localhost:8080/api/patients/docs/swagger-ui swagger +
 
@@ -20,4 +20,4 @@ recipe - http://localhost:8080/api/recipes/docs/swagger-ui    swagger +
 
 timetable - http://localhost:8080/api/timetable/docs/swagger-ui    swagger +
 
-minio - http://localhost:8089/api/minio/docs/swagger-ui    swagger ?
+minio - http://localhost:8089/api/minio/docs/swagger-ui    swagger down & delete + update -
