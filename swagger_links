@@ -4,7 +4,7 @@ auth - http://localhost:8080/api/v1/auth/docs/swagger-ui    swagger +
 
 analysis - http://localhost:8080/api/analyses/docs/swagger-ui    swagger +
 
-appointment - http://localhost:8080/api/appointments/docs/swagger-ui (controller swagger - / type swagger +
+appointment - http://localhost:8080/api/appointments/docs/swagger-ui (controller swagger + / type swagger +)
 
 billing - http://localhost:8080/api/billing/docs/swagger-ui    swagger +
 
@@ -12,7 +12,7 @@ doctor - http://localhost:8080/api/doctors/docs/swagger-ui    swagger +
 
 document - http://localhost:8080/api/documents/docs/swagger-ui    swagger +
 
-mail - http://localhost:8080/api/mail/docs/swagger-ui    swagger -
+mail - http://localhost:8080/api/mail/docs/swagger-ui    delete
 
 patient - http://localhost:8080/api/patients/docs/swagger-ui swagger +
 
